@@ -1,0 +1,85 @@
+blueprint:
+  name: IKEA Shortcut Button E1812 - Triggered by actions for Z2M 2.0
+  description: Blueprint for Ikea Tradfri Shortcut Button E1812. You can put several
+    actions to each single press, double press and long press. Modified to function with zigbee2mqtt version 2.0. Based on the work of [Danieldz](https://community.home-assistant.io/u/Danieldz/).
+  domain: automation
+  input:
+    button:
+      name: Remote
+      description: IKEA Shortcut Button to use (e.g sensor.kitchen_remote_action)
+      selector:
+        device:
+          filter:
+            - integration: mqtt
+              manufacturer: IKEA
+          multiple: false
+    single:
+      name: Action when On sended
+      description: Action to run when SHORT press
+      default: []
+      selector:
+        action: {}
+    double:
+      name: Action when Off sended
+      description: Action to run when DOUBLE SHORT press
+      default: []
+      selector:
+        action: {}
+    long:
+      name: Action when Brightness_move_up sended
+      description: Action to run when LONG press
+      default: []
+      selector:
+        action: {}
+    released:
+      name: Action when Brightness_stop sended
+      description: Action to run when LONG press RELEASED
+      default: []
+      selector:
+        action: {}
+mode: restart
+max_exceeded: silent
+trigger:
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: "off"
+  trigger: device
+  id: 'off'
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: "on"
+  trigger: device
+  id: 'on'
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: brightness_move_up
+  trigger: device
+  id: long_down
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: brightness_stop
+  trigger: device
+  id: stop
+condition: []
+action:
+- choose:
+  - conditions:
+    - condition: trigger
+      id: 'off'
+    sequence: !input double
+  - conditions:
+    - condition: trigger
+      id: 'on'
+    sequence: !input single
+  - conditions:
+    - condition: trigger
+      id: long_down
+    sequence: !input long
+  - conditions:
+    - condition: trigger
+      id: stop
+    sequence: !input released
