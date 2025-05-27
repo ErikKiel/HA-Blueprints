@@ -36,6 +36,12 @@ blueprint:
       default: []
       selector:
         action: {}
+    long_stopped:
+      name: Action when brightness_stop sended
+      description: Action to run when a long pressed button is lifted
+      default: []
+      selector:
+        action: {}
 mode: restart
 max_exceeded: silent
 trigger:
@@ -63,6 +69,12 @@ trigger:
   subtype: brightness_move_down
   trigger: device
   id: long_O
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: brightness_stop
+  trigger: device
+  id: long_lifted
 condition: []
 action:
 - choose:
@@ -82,3 +94,7 @@ action:
     - condition: trigger
       id: long_O
     sequence: !input off_long
+  - conditions:
+    - condition: trigger
+      id: long_lifted
+    sequence: !input long_stopped

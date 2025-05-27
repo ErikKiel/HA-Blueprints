@@ -14,7 +14,7 @@ Source: [Home Assistant Community](https://community.home-assistant.io/t/z2m-ike
 The original no longer works since a change in Zigbee2Mqtt version 2.0. Therefore I have modified the blueprint to work with the mqtt action triggers. 
 
 ### IKEA Tradfri on/off Button E1743 - Triggered by actions for Z2M 2.0
-Define actions for pressing on, off, brightness_move_up and brightness_move_down
+Define actions for pressing on, off, brightness_move_up, brightness_move_down and brightness_stop.
 
 Link to the YAML-File: [z2m-ikea-tradfri-on-off-button-e1743-triggered-by-actions.yaml](https://github.com/ErikKiel/HA-Blueprints/blob/main/z2m-ikea-tradfri-on-off-button-e1743-triggered-by-actions.yaml)  
 Link to import in Home Assistant directly: [Import Blueprint to HA](https://my.home-assistant.io/redirect/blueprint_import/?blueprint_url=https%3A//github.com/ErikKiel/HA-Blueprints/blob/main/z2m-ikea-tradfri-on-off-button-e1743-triggered-by-actions.yaml)
