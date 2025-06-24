@@ -1,5 +1,5 @@
 blueprint:
-  name: IKEA - double and triple action for on/off Buttons - Triggered by actions for Z2M 2.0
+  name: IKEA - double and triple action for on/off Buttons - Triggered by actions for Z2M 2.0 old
   description: Blueprint for the Ikea on/off Buttons to trigger actions when the on/off buttons are double or triple pressed. This should work with the tradfri and Rodret Buttons. 
   domain: automation
   input:
