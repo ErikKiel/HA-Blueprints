@@ -1,0 +1,118 @@
+blueprint:
+  name: IKEA - double and triple action for on/off Buttons - Triggered by actions for Z2M 2.0
+  description: Blueprint for the Ikea on/off Buttons to trigger actions when the on/off buttons are double or triple pressed. This should work with the tradfri and Rodret Buttons. 
+  domain: automation
+  input:
+    button:
+      name: Remote
+      description: IKEA on/off Remote to use.
+      selector:
+        device:
+          filter:
+          - integration: mqtt
+            manufacturer: IKEA
+          multiple: false
+    on_double:
+      name: Action when on Button is double pressed
+      #description: Action to run when On-Button is double pressed
+      default: []
+      selector:
+        action: {}
+    off_double:
+      name: Action when off Button is double pressed
+      #description: Action to run when Off-Button is double pressed
+      default: []
+      selector:
+        action: {}
+    on_triple:
+      name: Action when on Button is triple pressed
+      #description: Action to run when On-Button is triple pressed
+      default: []
+      selector:
+        action: {}
+    off_triple:
+      name: Action when off Button is triple pressed
+      #description: Action to run when Off-Button is triple pressed
+      default: []
+      selector:
+        action: {}
+mode: single
+max_exceeded: silent
+trigger:
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: 'on'
+  trigger: device
+  id: 'on'
+- domain: mqtt
+  device_id: !input button
+  type: action
+  subtype: 'off'
+  trigger: device
+  id: 'off'
+condition: []
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id:
+              - "on"
+        sequence:
+          - wait_for_trigger:
+              - domain: mqtt
+                device_id: !input button
+                type: action
+                subtype: "on"
+                trigger: device
+            continue_on_timeout: false
+            timeout:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - sequence: !input on_double
+          - wait_for_trigger:
+              - domain: mqtt
+                device_id: !input button
+                type: action
+                subtype: "on"
+                trigger: device
+            continue_on_timeout: false
+            timeout:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - sequence: !input on_triple
+      - conditions:
+          - condition: trigger
+            id:
+              - "off"
+        sequence:
+          - wait_for_trigger:
+              - domain: mqtt
+                device_id: !input button
+                type: action
+                subtype: "off"
+                trigger: device
+            continue_on_timeout: false
+            timeout:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - sequence: !input off_double
+          - wait_for_trigger:
+              - domain: mqtt
+                device_id: !input button
+                type: action
+                subtype: "off"
+                trigger: device
+            continue_on_timeout: false
+            timeout:
+              hours: 0
+              minutes: 0
+              seconds: 1
+              milliseconds: 0
+          - sequence: !input off_triple
